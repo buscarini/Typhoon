@@ -17,6 +17,7 @@
 #import "TyphoonInitializer+InstanceBuilder.h"
 #import "TyphoonDefinition+InstanceBuilder.h"
 #import "TyphoonPropertyInjectedAsCollection.h"
+#import "TyphoonPropertyInjectedAsDictionary.h"
 #import "TyphoonPropertyInjectedAsObjectInstance.h"
 
 
@@ -146,6 +147,20 @@
         collectionValues(weakPropertyInjectedAsCollection);
     }
     [_injectedProperties addObject:propertyInjectedAsCollection];
+}
+
+- (void)injectProperty:(SEL)withSelector asDictionary:(void (^)(TyphoonPropertyInjectedAsDictionary *))dictionaryValues
+{
+    TyphoonPropertyInjectedAsDictionary
+	* propertyInjectedAsDictionary = [[TyphoonPropertyInjectedAsDictionary alloc] initWithName:NSStringFromSelector(withSelector)];
+	
+    if (dictionaryValues)
+    {
+        __unsafe_unretained TyphoonPropertyInjectedAsDictionary* weakPropertyInjectedAsDictionary = propertyInjectedAsDictionary;
+        dictionaryValues(weakPropertyInjectedAsDictionary);
+    }
+	
+    [_injectedProperties addObject:propertyInjectedAsDictionary];
 }
 
 - (void)setInitializer:(TyphoonInitializer*)initializer

@@ -10,7 +10,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-#import "TyphoonPropertyInjectedAsCollection.h"
+#import "TyphoonPropertyInjectedAsDictionary.h"
 #import "TyphoonTypeDescriptor.h"
 #import "TyphoonIntrospectionUtils.h"
 #import "TyphoonDefinition.h"
@@ -18,7 +18,7 @@
 #import "TyphoonByReferenceCollectionValue.h"
 
 
-@implementation TyphoonPropertyInjectedAsCollection
+@implementation TyphoonPropertyInjectedAsDictionary
 
 
 /* ====================================================================================================================================== */
@@ -38,39 +38,28 @@
 /* ====================================================================================================================================== */
 #pragma mark - Interface Methods
 
-- (TyphoonCollectionType)resolveCollectionTypeWith:(id<TyphoonIntrospectiveNSObject>)instance;
+- (TyphoonDictionaryType)resolveCollectionTypeWith:(id<TyphoonIntrospectiveNSObject>)instance;
 {
     TyphoonTypeDescriptor* descriptor = [TyphoonIntrospectionUtils typeForPropertyWithName:_name inClass:[instance class]];
     Class describedClass = (Class) [descriptor classOrProtocol];
     if (describedClass == nil)
     {
         [NSException raise:NSInvalidArgumentException format:@"Property named '%@' does not exist on class '%@'.", _name,
-                                                             NSStringFromClass([instance class])];
+		 NSStringFromClass([instance class])];
     }
-    if ([describedClass isSubclassOfClass:[NSMutableArray class]])
+    if ([describedClass isSubclassOfClass:[NSMutableDictionary class]])
     {
-        return TyphoonCollectionTypeNSMutableArray;
+        return TyphoonDictionaryTypeNSMutableDictionary;
     }
-    else if ([describedClass isSubclassOfClass:[NSArray class]])
+    else if ([describedClass isSubclassOfClass:[NSDictionary class]])
     {
-        return TyphoonCollectionTypeNSArray;
+        return TyphoonDictionaryTypeNSDictionary;
     }
-    else if ([describedClass isSubclassOfClass:[NSCountedSet class]])
-    {
-        return TyphoonCollectionTypeNSCountedSet;
-    }
-    else if ([describedClass isSubclassOfClass:[NSMutableSet class]])
-    {
-        return TyphoonCollectionTypeNSMutableSet;
-    }
-    else if ([describedClass isSubclassOfClass:[NSSet class]])
-    {
-        return TyphoonCollectionTypeNSSet;
-    }
-
-    [NSException raise:NSInvalidArgumentException format:@"Property named '%@' on '%@' is neither an NSSet nor NSArray.", _name,
-                                                         NSStringFromClass(describedClass)];
-    return TyphoonCollectionInvalidType;
+	
+    [NSException raise:NSInvalidArgumentException format:@"Property named '%@' on '%@' is not a NSDictionary.", _name,
+	 NSStringFromClass(describedClass)];
+	
+    return TyphoonDictionaryInvalidType;
 }
 
 /* ====================================================================================================================================== */
@@ -94,7 +83,7 @@
 {
     NSMutableString* description = [NSMutableString stringWithFormat:@"<%@: ", NSStringFromClass([self class])];
     [description appendFormat:@"self.name=%@", self.name];
-    [description appendFormat:@", _values=%@", _values];
+    [description appendFormat:@", _valuesDic=%@", _valuesDic];
     [description appendString:@">"];
     return description;
 }

@@ -16,6 +16,7 @@
 @class TyphoonDefinition;
 @protocol TyphoonInjectedProperty;
 @class TyphoonPropertyInjectedAsCollection;
+@class TyphoonPropertyInjectedAsDictionary;
 
 typedef enum
 {
@@ -93,5 +94,7 @@ typedef void(^TyphoonDefinitionBlock)(TyphoonDefinition* definition);
 - (void)injectProperty:(SEL)withSelector withValueAsText:(NSString*)textValue;
 
 - (void)injectProperty:(SEL)withSelector asCollection:(void (^)(TyphoonPropertyInjectedAsCollection*))collectionValues;
+
+- (void)injectProperty:(SEL)withSelector asDictionary:(void (^)(TyphoonPropertyInjectedAsDictionary*))dictionaryValues;
 
 @end

@@ -21,7 +21,8 @@ typedef enum
     TyphoonPropertyInjectionTypeByType,
     TyphoonPropertyInjectionTypeAsStringRepresentation,
     TyphoonPropertyInjectionTypeAsObjectInstance,
-    TyphoonPropertyInjectionTypeAsCollection
+    TyphoonPropertyInjectionTypeAsCollection,
+	TyphoonPropertyInjectionTypeAsDictionary,
 } TyphoonPropertyInjectionType;
 
 @protocol TyphoonInjectedProperty <NSObject>

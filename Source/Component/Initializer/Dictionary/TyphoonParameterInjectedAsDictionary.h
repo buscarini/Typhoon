@@ -10,19 +10,17 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 
-
-
 #import <Foundation/Foundation.h>
 #import "TyphoonInjectedParameter.h"
+#import "TyphoonArgumentInjectedAsDictionary.h"
 
+@interface TyphoonParameterInjectedAsDictionary : TyphoonArgumentInjectedAsDictionary <TyphoonInjectedParameter>
 
-@interface TyphoonParameterInjectedByReference : NSObject <TyphoonInjectedParameter>
-
-@property (nonatomic, readonly) NSUInteger index;
 @property (nonatomic, readonly) TyphoonParameterInjectionType type;
-@property (nonatomic, strong, readonly) NSString* reference;
+@property (nonatomic, readonly) NSUInteger index;
 
-- (id)initWithParameterIndex:(NSUInteger)parameterIndex reference:(NSString*)reference;
+@property (nonatomic, readonly) TyphoonDictionaryType dictionaryType;
 
+- (id)initWithParameterIndex:(NSUInteger)index requiredType:(Class)requiredType;
 
 @end

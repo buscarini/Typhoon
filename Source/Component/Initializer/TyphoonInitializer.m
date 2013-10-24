@@ -17,7 +17,6 @@
 #import "TyphoonParameterInjectedWithStringRepresentation.h"
 #import "TyphoonParameterInjectedWithObjectInstance.h"
 #import "TyphoonDefinition.h"
-#import "TyphoonParameterInjectedAsCollection.h"
 
 @implementation TyphoonInitializer
 
@@ -75,6 +74,11 @@
 - (void)injectParameterNamed:(NSString *)name asCollection:(void (^)(TyphoonParameterInjectedAsCollection *))collectionValues requiredType:(id)requiredType
 {
     [self injectParameterAtIndex:[self indexOfParameter:name] asCollection:collectionValues requiredType:requiredType];
+}
+
+- (void)injectParameterNamed:(NSString *)name asDictionary:(void (^)(TyphoonParameterInjectedAsDictionary *))dictionaryValues requiredType:(id)requiredType
+{
+    [self injectParameterAtIndex:[self indexOfParameter:name] asDictionary:dictionaryValues requiredType:requiredType];
 }
 
 - (void)injectParameterAtIndex:(NSUInteger)index withValueAsText:(NSString*)text requiredTypeOrNil:(id)requiredClass
@@ -156,6 +160,25 @@
     if (index != NSUIntegerMax && index < [_parameterNames count])
     {
         [_injectedParameters addObject:parameterInjectedAsCollection];
+    }
+}
+
+-(void)injectParameterAtIndex:(NSUInteger)index
+                 asDictionary:(void (^)(TyphoonParameterInjectedAsDictionary *))dictionaryValues requiredType:(id)requiredType
+{
+    
+    TyphoonParameterInjectedAsDictionary *parameterInjectedAsDictionary =
+    [[TyphoonParameterInjectedAsDictionary alloc] initWithParameterIndex:index requiredType:requiredType];
+    
+    if (dictionaryValues)
+    {
+        __unsafe_unretained TyphoonParameterInjectedAsDictionary* weakParameterInjectedAsDictionary = parameterInjectedAsDictionary;
+        dictionaryValues(weakParameterInjectedAsDictionary);
+    }
+    
+    if (index != NSUIntegerMax && index < [_parameterNames count])
+    {
+        [_injectedParameters addObject:parameterInjectedAsDictionary];
     }
 }
 

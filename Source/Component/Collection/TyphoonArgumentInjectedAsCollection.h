@@ -16,6 +16,7 @@
 
 typedef enum
 {
+    TyphoonCollectionInvalidType,
     TyphoonCollectionTypeNSArray,
     TyphoonCollectionTypeNSMutableArray,
     TyphoonCollectionTypeNSSet,
